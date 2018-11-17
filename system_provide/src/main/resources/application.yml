@@ -1,0 +1,11 @@
+spring:
+  application:
+    name: system-provide
+server:
+  port: 9011
+eureka:
+  instance:
+    hostname: localhost
+  client:
+    register-with-eureka: false
+    fetch-registry: false

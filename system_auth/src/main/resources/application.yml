@@ -1,0 +1,47 @@
+spring:
+  application:
+    name: system-auth
+  zipkin:
+    base-url: http://localhost:9014
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9011/eureka/
+# jwt 配置
+jwt:
+  # 加密密钥
+  secret: QW87ER4QWR4QWE56WQER21WQER3
+  # token有效时长
+  expire: 1 # 单位时
+feign:
+  hystrix:
+    enabled: true
+ribbon:
+  #请求处理的超时时间
+  ReadTimeout: 10000
+  #请求连接的超时时间
+  ConnectTimeout: 10000
+#hystrix 配置
+hystrix:
+  command:
+    default:
+      execution:
+        timeout:
+          #如果enabled设置为false，则请求超时交给ribbon控制
+          enabled: false
+        isolation:
+          thread:
+            timeoutInMilliseconds: 10000
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"  #<2>
+  endpoint:
+    health:
+      show-details: ALWAYS
+server:
+  port: 9019
+logging:
+  level:
+    com.system.feign.IAdminService: debug

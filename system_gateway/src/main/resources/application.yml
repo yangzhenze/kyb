@@ -1,0 +1,36 @@
+spring:
+  application:
+    name: system-getway
+  zipkin:
+    base-url: http://localhost:9014
+  cloud:
+    gateway:
+      routes:
+      - id: system-admin
+        uri: lb://system-admin #转发路径
+        predicates:
+        - Path=/api/** #匹配路径
+        filters:
+        - StripPrefix=1 #排除前缀/api/admin/
+      - id: system-auth
+        uri: lb://system-auth
+        predicates:
+        - Path=/auth/**
+#web:
+  #upload-path: E:/Downloads
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:9011/eureka/
+logging:
+  level:
+    org.springframework.cloud.gateway: TRACE
+    org.springframework.http.server.reactive: DEBUG
+    org.springframework.web.reactive: DEBUG
+    reactor.ipc.netty: DEBUG
+    com.system.feign: DEBUG
+server:
+  port: 9013
+gate:
+  ignore:
+    startWith: /auth/login

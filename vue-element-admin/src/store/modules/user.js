@@ -81,6 +81,7 @@ const user = {
           reject(error)
         })*/
         commit('SET_TOKEN', '')
+        commit('SET_PERMISSION', null)
         removeToken()
         resolve()
       })

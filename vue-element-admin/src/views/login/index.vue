@@ -80,10 +80,10 @@ export default {
 
   },
   created() {
-    // window.addEventListener('hashchange', this.afterQRScan)
+     //window.addEventListener('hashchange', this.afterQRScan)
   },
   destroyed() {
-    // window.removeEventListener('hashchange', this.afterQRScan)
+     //window.removeEventListener('hashchange', this.afterQRScan)
   },
   methods: {
     showPwd() {
@@ -101,7 +101,10 @@ export default {
           const desPwd = encrypt.encryptByDE(this.loginForm.password, this.loginForm.username + 'admin')
           this.$store.dispatch('Login', objectToFormData({ username: this.loginForm.username, password: desPwd })).then(() => {
             this.$store.dispatch('GetInfo').then(() => {
+              debugger
+              console.log(this.$store.getters.permission)
               this.$store.dispatch('GetPermission').then(response => {
+                console.log(this.$store.getters.permission)
                 if (Object.keys(this.$store.getters.permission).length > 0) {
                   const other = this
                   this.$store.getters.permission.forEach(function(item) {

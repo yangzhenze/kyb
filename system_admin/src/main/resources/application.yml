@@ -7,7 +7,7 @@ spring:
     base-url: http://localhost:9014
   datasource:
     druid:
-      url: jdbc:mysql://123.207.61.212:3306/system_admin?useSSL=false&characterEncoding=utf-8&autoReconnect=true
+      url: jdbc:mysql://123.207.61.212:3306/kyb?useSSL=false&characterEncoding=utf-8&autoReconnect=true
       username: root
       password: yangzhenze6712
       initial-size: 5 #初始化时建立物理连接的个数。初始化发生在显示调用init方法，或者第一次getConnection时

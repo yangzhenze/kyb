@@ -58,19 +58,19 @@ public class BaseDao<T> {
         log.info("主键字段是：" + this.pkName);
     }
 
-    public boolean insertEntity(T entity) {
+    protected boolean insertEntity(T entity) {
         String sql = this.makeSql(SQL_INSERT,entity);
         Object[] args = this.setArgs(entity, SQL_INSERT);
         return jdbcTemplate.update(sql.toString(), args) > 0?true:false;
     }
 
-    public boolean updateEntity(T entity) {
+    protected boolean updateEntity(T entity) {
         String sql = this.makeSql(SQL_UPDATE,entity);
         Object[] args = this.setArgs(entity, SQL_UPDATE);
         return jdbcTemplate.update(sql.toString(), args) > 0?true:false;
     }
 
-    public boolean deleteEntity(T entity) {
+    protected boolean deleteEntity(T entity) {
         String sql = this.makeSql(SQL_DELETE,entity);
         Object[] args = this.setArgs(entity, SQL_DELETE);
         return jdbcTemplate.update(sql.toString(), args) > 0?true:false;
@@ -81,7 +81,7 @@ public class BaseDao<T> {
         return jdbcTemplate.update(sql, id) > 0?true:false;
     }*/
 
-    public boolean deleteById(Serializable ... ids){
+    protected boolean deleteById(Serializable ... ids){
         String args = "";
 
         for(Serializable id:ids){
@@ -94,33 +94,33 @@ public class BaseDao<T> {
         return jdbcTemplate.update(sql, ids) > 0?true:false;
     }
 
-    public boolean deleteTable() {
+    protected boolean deleteTable() {
         String sql = " TRUNCATE TABLE " + this.tableName;
         return jdbcTemplate.update(sql) > 0?true:false;
     }
 
-    public T findEntityById(Serializable id) {
+    protected T findEntityById(Serializable id) {
         String sql = "SELECT * FROM " + this.tableName + " WHERE "+this.pkName+"=?";
         List<T> list =  jdbcTemplate.query(sql, this.rowMapper, id);
         return list.size() > 0?list.get(0):null;
     }
 
-    public T findFirstEntity(String sql,Object ... args){
+    protected T findFirstEntity(String sql,Object ... args){
 
         List<T> list = jdbcTemplate.query(sql, args, this.rowMapper);
 
         return list.size() > 0?list.get(0):null;
     }
 
-    public List<T> findAllEntity() {
+    protected List<T> findAllEntity() {
         String sql = "SELECT * FROM " + this.tableName;
         return jdbcTemplate.query(sql, this.rowMapper);
     }
 
-    public List<T> findEntity(String sql,Object ... args){
+    protected List<T> findEntity(String sql,Object ... args){
         return jdbcTemplate.query(sql, args, this.rowMapper);
     }
-    public List<Map<String,Object>> select(String sql,Object ... args){
+    protected List<Map<String,Object>> select(String sql,Object ... args){
         return jdbcTemplate.queryForList(sql, args);
     }
 
@@ -132,7 +132,7 @@ public class BaseDao<T> {
      * @param args
      * @return
      */
-    public Page<T> paginate(int whichPage,int pageSize,String whereSql,Object ... args){
+    protected Page<T> paginate(int whichPage,int pageSize,String whereSql,Object ... args){
 
         if(!StrUtil.isBlank(whereSql) && whereSql.toLowerCase().indexOf(SQL_WHERE) < 0 && whereSql.toLowerCase().trim().indexOf(SQL_ORDER) != 0){
             whereSql = " where "+whereSql;
@@ -152,7 +152,7 @@ public class BaseDao<T> {
 
     }
 
-    public Page<Map<String,Object>> paginate(int whichPage,int pageSize,String select,String sql,Object ... args){
+    protected Page<Map<String,Object>> paginate(int whichPage,int pageSize,String select,String sql,Object ... args){
 
         String totalRowSql = "select count(*) "+replaceOrderBy(sql);
         int totalRow = jdbcTemplate.queryForObject(totalRowSql,args,Integer.class);

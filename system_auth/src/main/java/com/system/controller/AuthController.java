@@ -21,7 +21,7 @@ public class AuthController {
     @Autowired
     private IAdminService adminService;
 
-    @RequestMapping(value = "login", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
+    @PostMapping(value = "/login", produces = "application/json;charset=UTF-8")
     public String login(String username,String password){
         JwtInfo jwtInfo = new JwtInfo();
         Map<String,Object> ret = new HashMap<>();

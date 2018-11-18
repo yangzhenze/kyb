@@ -21,27 +21,27 @@ import java.util.Map;
  * @Date 2018/7/11 下午12:25
  */
 @Service
-@CacheConfig(cacheNames = "permission")
+//@CacheConfig(cacheNames = "permission")
 public class PermissionServiceImpl implements IPermissionService {
     private static final Logger log = LoggerFactory.getLogger(PermissionServiceImpl.class);
     @Autowired
     IPermissionDao permissionDao;
 
     @Override
-    @CacheEvict(value = "permission",allEntries=true)
+    //@CacheEvict(value = "permission",allEntries=true)
     public boolean save(Permission permission) {
         permission.setSort(permissionDao.findMaxSort(permission.getParentId()));
         return permissionDao.save(permission);
     }
 
     @Override
-    @CacheEvict(value = "permission",allEntries=true)
+    //@CacheEvict(value = "permission",allEntries=true)
     public boolean update(Permission permission) {
         return permissionDao.update(permission);
     }
 
     @Override
-    @CacheEvict(value = "permission",allEntries=true)
+    //@CacheEvict(value = "permission",allEntries=true)
     public boolean deleteById(Integer id) {
         List<Permission> childrenPer = permissionDao.findByParentId(id);
         Integer ids [] = new Integer[childrenPer.size()];
@@ -64,7 +64,7 @@ public class PermissionServiceImpl implements IPermissionService {
     }
 
     @Override
-    @Cacheable(value = "permission", key = "#roleId+'-treelist'")
+    //@Cacheable(value = "permission", key = "#roleId+'-treelist'")
     public List<Map<String, Object>> getTreeList(Integer roleId) {
         log.info("获取角色权限树形数据");
         return permissionDao.findTreeList(null,roleId);

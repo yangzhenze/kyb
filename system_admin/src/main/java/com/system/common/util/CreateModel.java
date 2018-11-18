@@ -33,8 +33,8 @@ public class CreateModel {
 		USER_NAME = "数据库帐号";
 		PASSWORD = "密码";
 		PACKAGENAME = "导入包路径";*/
-		FILE_PATH = "main/java/com/system/bean";
-		DATABASENAME = "admin_system";
+		FILE_PATH = "/main/java/com/system/bean";
+		DATABASENAME = "kyb";
 		URL = "jdbc:mysql://123.207.61.212:3306/" + DATABASENAME;
 		JDBC_DRIVER = "com.mysql.jdbc.Driver";
 		USER_NAME = "root";

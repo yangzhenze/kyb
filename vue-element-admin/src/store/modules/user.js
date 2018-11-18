@@ -58,7 +58,6 @@ const user = {
       return new Promise((resolve, reject) => {
         getPer(state.userInfo.adminType).then(response => {
           if (response.code === 0) {
-            console.log(toRouters(response.data))
             commit('SET_PERMISSION', toRouters(response.data))
             resolve(response)
           } else {

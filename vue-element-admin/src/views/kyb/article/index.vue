@@ -28,30 +28,12 @@
       </div>
 
     </el-dialog>
-
-    <el-dialog :title="perTree.dialogPermissionName" :visible.sync="dialogPermission">
-      <el-tree
-        ref="tree"
-        :data="perTree.treeData"
-        :default-checked-keys="perTree.defaultData"
-        :default-expand-all="true"
-        :check-strictly="true"
-        :props="perTree.defaultProps"
-        show-checkbox
-        node-key="id"
-        @check="setFunction"/>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogPermission = false">{{ $t('table.cancel') }}</el-button>
-        <el-button type="primary" @click="confirmPermission">{{ $t('table.confirm') }}</el-button>
-      </div>
-    </el-dialog>
   </div>
 </template>
 <script>
   import tableModel from '@/components/Table'
-  import { getList, addRole, updateRole, getRoleById, delRole, getRolePer, addRolePer } from '@/api/role'
+  import { getList, addArticle, updateArticle, getArticle, delArticle } from '@/api/kyb/article'
   import { objectToFormData } from '@/utils'
-  import { getList as treeList } from '@/api/permission'
   export default {
     name: 'kyb/article',
     components: { tableModel },
@@ -64,17 +46,6 @@
         },
         dialogFormVisible: false,
         dialogPermission: false,
-
-        perTree: {
-          dialogPermissionName: '',
-          permissionId: '',
-          treeData: [],
-          defaultData: [],
-          defaultProps: {
-            children: 'children',
-            label: 'permission_name'
-          }
-        },
         columns: [
           {
             text: this.$t('role.column.name'),
@@ -88,12 +59,15 @@
         ],
         dataForm: {
           id: '',
-          roleName: '',
-          description: ''
+          title: '',
+          content: ''
         },
         rules: {
-          roleName: [
-            { required: true, message: this.$t('role.role.roleName'), trigger: 'blur' }
+          title: [
+            { required: true, message: '请输入文章标题', trigger: 'blur' }
+          ],
+          content: [
+            { required: true, message: '请输入文章内容', trigger: 'blur' }
           ]
         }
       }
@@ -114,7 +88,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             other.dialogFormVisible = false
-            addRole(objectToFormData(this.dataForm)).then(response => {
+            addArticle(objectToFormData(this.dataForm)).then(response => {
               if (response.code === 0) {
                 other.$message.success(response.msg)
                 other.$refs.tableModel.getPage(1, other.$refs.tableModel.pagination.pagesize)
@@ -132,7 +106,7 @@
         this.$refs[formName].validate((valid) => {
           if (valid) {
             other.dialogFormVisible = false
-            updateRole(this.dataForm).then(response => {
+            updateArticle(this.dataForm).then(response => {
               if (response.code === 0) {
                 other.$message.success(response.msg)
                 other.$refs.tableModel.getPage(1, other.$refs.tableModel.pagination.pagesize)
@@ -151,7 +125,7 @@
           this.$refs['dataForm'].resetFields()
         }
 
-        getRoleById(id).then(response => {
+        getArticle(id).then(response => {
           other.dataForm.id = response.data.id
           other.dataForm.roleName = response.data.roleName
           other.dataForm.description = response.data.description
@@ -161,7 +135,7 @@
       },
       deleteData(id) {
         return new Promise((resolve, reject) => {
-          delRole(id).then(response => {
+          delArticle(id).then(response => {
             resolve(response)
           }).catch(error => {
             reject(error)
@@ -196,89 +170,6 @@
         this.dataForm.id = ''
         this.dataForm.roleName = ''
         this.dataForm.description = ''
-      },
-      getPer(row) {
-        this.perTree.permissionId = row.id
-        this.perTree.dialogPermissionName = row.roleName
-        this.dialogPermission = true
-        this.getRolePerData(this.perTree.permissionId).then(response => {
-          this.perTree.defaultData = response.data.map(item => item.perId)
-          this.getTreeList()
-        })
-      },
-      getTreeList() {
-        const other = this
-        treeList().then(response => {
-          other.perTree.treeData = response.data
-        })
-      },
-      confirmPermission() {
-        const permission = this.$refs.tree.getCheckedKeys()
-        this.addRolePer(this.perTree.permissionId, permission)
-      },
-      async getRolePerData(id) {
-        const role = getRolePer(id)
-        return role
-      },
-      addRolePer(id, ids) {
-        const other = this
-        addRolePer(id, objectToFormData({ 'permissions': ids.join() })).then(response => {
-          other.$message.success(response.msg)
-          other.dialogPermission = false
-        })
-      },
-      setFunction(node, data) {
-        let checked = false
-        const nodes = this.$refs.tree.getNode(node.id)
-        checked = nodes.checked
-
-        if (checked) {
-          if (nodes.parent.key !== undefined) {
-            this.checkParent(nodes.parent, true)
-          }
-
-          if (nodes.childNodes.length > 0) {
-            this.checkChildren(nodes.childNodes, true)
-          }
-        } else {
-          if (nodes.childNodes.length > 0) {
-            this.checkChildren(nodes.childNodes, false)
-          }
-          if (nodes.parent.key !== undefined) {
-            this.checkParent(nodes.parent, false)
-          }
-        }
-      },
-      checkParent(node, checked) {
-        if (checked) {
-          this.$refs.tree.setChecked(node, checked)
-          if (node.parent.key !== undefined) {
-            this.checkParent(node.parent, checked)
-          }
-        } else {
-          let flag = false
-          node.childNodes.forEach(function(item) {
-            if (item.checked) {
-              flag = true
-            }
-          })
-
-          if (!flag) {
-            this.$refs.tree.setChecked(node, checked)
-            if (node.parent.key !== undefined) {
-              this.checkParent(node.parent, checked)
-            }
-          }
-        }
-      },
-      checkChildren(nodes, checked) {
-        const other = this
-        nodes.forEach(function(node) {
-          other.$refs.tree.setChecked(node, checked)
-          if (node.childNodes.length > 0) {
-            other.checkChildren(node.childNodes, checked)
-          }
-        })
       }
     }
 

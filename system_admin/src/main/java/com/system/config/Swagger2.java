@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @Configuration
-public class Swagger2 extends WebMvcConfigurationSupport {
+public class Swagger2 {
 
     @Bean
     public Docket createRestApi() {

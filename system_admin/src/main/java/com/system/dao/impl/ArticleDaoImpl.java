@@ -16,7 +16,7 @@ import java.io.Serializable;
 public class ArticleDaoImpl  extends BaseDao<Article> implements IArticleDao {
     @Override
     public boolean save(Article article) {
-        return this.save(article);
+        return super.insertEntity(article);
     }
 
     @Override
@@ -26,22 +26,22 @@ public class ArticleDaoImpl  extends BaseDao<Article> implements IArticleDao {
 
     @Override
     public boolean delById(Serializable... ids) {
-        return this.deleteById(ids);
+        return super.deleteById(ids);
     }
 
     @Override
     public boolean update(Article article) {
-        return this.update(article);
+        return super.updateEntity(article);
     }
 
     @Override
     public Article findById(Serializable id) {
-        return this.findById(id);
+        return super.findEntityById(id);
     }
 
     @Override
     public Page<Article> findPage(int page, int pageSize, Object... args) {
         String sql = "order by create_date desc";
-        return this.paginate(page,pageSize,sql,args);
+        return super.paginate(page,pageSize,sql,args);
     }
 }

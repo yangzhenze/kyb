@@ -1,5 +1,6 @@
 web:
   upload-path: E:/downloads/images/
+  apiPath: http://localhost:9013/api/
 spring:
   application:
     name: system-admin

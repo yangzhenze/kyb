@@ -1,6 +1,5 @@
 import request from '@/utils/request'
 
-
 // 获取列表
 export function getList(page, params) {
   return request({
@@ -31,8 +30,6 @@ export function updateArticle(params) {
     params
   })
 }
-
-
 
 // 获取详情
 export function getArticle(id) {

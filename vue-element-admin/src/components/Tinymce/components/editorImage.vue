@@ -2,16 +2,16 @@
   <div class="upload-container">
     <el-button :style="{background:color,borderColor:color}" icon="el-icon-upload" size="mini" type="primary" @click=" dialogVisible=true">上传图片
     </el-button>
-    <el-dialog :visible.sync="dialogVisible">
+    <el-dialog :visible.sync="dialogVisible" append-to-body>
       <el-upload
         :multiple="true"
         :file-list="fileList"
         :show-file-list="true"
         :on-remove="handleRemove"
-        :on-success="handleSuccess"
         :before-upload="beforeUpload"
+        :http-request="uploadFile"
         class="editor-slide-upload"
-        action="https://httpbin.org/post"
+        action=""
         list-type="picture-card">
         <el-button size="small" type="primary">点击上传</el-button>
       </el-upload>
@@ -24,6 +24,7 @@
 <script>
 // import { getToken } from 'api/qiniu'
 
+import { upload } from '@/api/common'
 export default {
   name: 'EditorSlideUpload',
   props: {
@@ -54,17 +55,6 @@ export default {
       this.fileList = []
       this.dialogVisible = false
     },
-    handleSuccess(response, file) {
-      const uid = file.uid
-      const objKeyArr = Object.keys(this.listObj)
-      for (let i = 0, len = objKeyArr.length; i < len; i++) {
-        if (this.listObj[objKeyArr[i]].uid === uid) {
-          this.listObj[objKeyArr[i]].url = response.files.file
-          this.listObj[objKeyArr[i]].hasSuccess = true
-          return
-        }
-      }
-    },
     handleRemove(file) {
       const uid = file.uid
       const objKeyArr = Object.keys(this.listObj)
@@ -76,6 +66,7 @@ export default {
       }
     },
     beforeUpload(file) {
+      debugger
       const _self = this
       const _URL = window.URL || window.webkitURL
       const fileName = file.uid
@@ -87,6 +78,25 @@ export default {
           _self.listObj[fileName] = { hasSuccess: false, uid: file.uid, width: this.width, height: this.height }
         }
         resolve(true)
+      })
+    },
+    uploadFile(item) {
+      const formData = new FormData()
+      formData.append('file', item.file)
+      const other = this
+      upload(formData).then(response => {
+        const uid = item.file.uid
+        const objKeyArr = Object.keys(other.listObj)
+        for (let i = 0, len = objKeyArr.length; i < len; i++) {
+          if (this.listObj[objKeyArr[i]].uid === uid) {
+            this.listObj[objKeyArr[i]].url = response.data
+            this.listObj[objKeyArr[i]].hasSuccess = true
+            item.onSuccess('配时文件上传成功')
+            return
+          }
+        }
+      }).catch(e => {
+        item.onError('配时文件上传失败，服务器端无响应')
       })
     }
   }

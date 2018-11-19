@@ -35,9 +35,6 @@ import java.util.UUID;
 public class AdminController {
     protected static final Logger logger = LoggerFactory.getLogger(AdminController.class);
     private final String DEFAULT_PWD = StrUtil.getMD5("123456");
-    @Value("${web.upload-path}")
-    private String filePath;
-    private String staticPath = "static/";
 
     @Autowired
     IAdminService adminService;
@@ -159,46 +156,5 @@ public class AdminController {
 
         return Ret.msgSuccess(adminService.getById(Integer.parseInt(id)));
     }
-
-
-
-
-
-    @RequestMapping(value="/upload",method = RequestMethod.POST,produces={"application/json;charset=UTF-8"})
-    @ApiOperation(value = "文件上传",notes = "上传文件接口")
-    public String uploadAdminImg(@RequestParam("file") MultipartFile file, HttpServletRequest request) {
-        return this.upload(file,"admin");
-
-    }
-
-    private String upload(MultipartFile file, String dicName){
-        // 获取静态上传路径
-        String realFilePath = filePath+dicName+"/";
-        String fileName = this.reNameFile(file.getOriginalFilename());
-        try {
-            uploadFile(file.getBytes(), realFilePath, fileName);
-        } catch (Exception e) {
-            e.printStackTrace();
-            return Ret.msgSetVal("文件上传失败");
-        }
-        return Ret.msgSuccess(staticPath+dicName+"/"+fileName);
-    }
-
-    private void uploadFile(byte[] file, String filePath, String fileName) throws Exception {
-        File targetFile = new File(filePath);
-        if(false == targetFile.exists()){
-            targetFile.mkdirs();
-        }
-        FileOutputStream out = new FileOutputStream(filePath+fileName);
-        out.write(file);
-        out.flush();
-        out.close();
-    }
-
-    private String reNameFile(String fileName){
-        String suffix = fileName.substring(fileName.lastIndexOf("."),fileName.length());
-        return DateUtil.formatDate(new Date(),"yyyyMMddhhssmmSSS")+ UUID.randomUUID()+suffix;
-    }
-
 
 }

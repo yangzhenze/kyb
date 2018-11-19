@@ -12,6 +12,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
+
 /**
  * @author zzy
  * @Date 2018/11/18 2:16 PM
@@ -27,7 +29,7 @@ public class ArticleController {
     @RequestMapping(value = "", method = RequestMethod.POST, produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "创建文章",notes = "创建文章")
     public String addAdmin(Article article){
-
+        article.setCreateDate(new Date());
         if(articleService.add(article)){
             return Ret.msgAdd();
         }
@@ -45,7 +47,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "更新管理员", notes = "更新管理员信息")
+    @ApiOperation(value = "更新文章员", notes = "更新文章")
     public String update(Article article){
 
         if(articleService.update(article)){
@@ -55,8 +57,18 @@ public class ArticleController {
 
     }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
+    @ApiOperation(value = "删除文章", notes = "根据id删除文章")
+    @ApiImplicitParam(name = "id",value = "管理员id",required = true,paramType = "path",dataType = "Integer")
+    public String delArticle(@PathVariable Integer [] id){
+        if(articleService.delById(id)){
+            return Ret.setSuccessMsg("删除成功");
+        }
+        return Ret.msgSetVal("删除失败");
+    }
+
     @RequestMapping(value = "/page/{page}", method = RequestMethod.GET, produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "获取管理员列表",notes = "根据页数获取管理员列表")
+    @ApiOperation(value = "获取文章列表",notes = "根据页数获取文章列表")
     @ApiImplicitParam(paramType = "query", dataType = "int", name = "pageSize", value = "分页行数", required = false)
     public String getArticlePage(@PathVariable Integer page,Integer pageSize){
 

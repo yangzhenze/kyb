@@ -132,7 +132,7 @@ public class BaseDao<T> {
      * @param args
      * @return
      */
-    protected Page<T> paginate(int whichPage,int pageSize,String whereSql,Object ... args){
+    protected Page<T> paginateEntity(int whichPage,int pageSize,String whereSql,Object ... args){
 
         if(!StrUtil.isBlank(whereSql) && whereSql.toLowerCase().indexOf(SQL_WHERE) < 0 && whereSql.toLowerCase().trim().indexOf(SQL_ORDER) != 0){
             whereSql = " where "+whereSql;

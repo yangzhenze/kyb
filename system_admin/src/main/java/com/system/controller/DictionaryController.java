@@ -155,17 +155,15 @@ public class DictionaryController {
             @ApiImplicitParam(paramType = "query", dataType = "code", name = "value", value = "标识码", required = true)
     })
     public String getDicListByCode(String code){
-        Map<String, String> result = new HashMap<>();
-        List<Dictionary> dictionaries =  dictionaryService.getByCode(code);
         if (StrUtil.isBlank(code)) {
             return Ret.msgSetVal("参数code不能为空");
         }
 
-        dictionaries.forEach(d -> {
+        /*dictionaries.forEach(d -> {
             result.put(d.getDicValue(),d.getDicName());
-        });
+        });*/
 
 
-        return Ret.msgSuccess(result);
+        return Ret.msgSuccess(dictionaryService.getByCode(code));
     }
 }

@@ -38,6 +38,6 @@ public class ProductDaoImpl extends BaseDao<Product> implements IProductDao{
     @Override
     public Page<Product> findPage(int page, int pageSize, Object... args) {
         String sql = "order by create_date desc";
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginateEntity(page,pageSize,sql,args);
     }
 }

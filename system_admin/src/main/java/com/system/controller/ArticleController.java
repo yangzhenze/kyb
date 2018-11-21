@@ -47,7 +47,7 @@ public class ArticleController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.PUT, produces = "application/json;charset=UTF-8")
-    @ApiOperation(value = "更新文章员", notes = "更新文章")
+    @ApiOperation(value = "更新文章", notes = "更新文章")
     public String update(Article article){
 
         if(articleService.update(article)){

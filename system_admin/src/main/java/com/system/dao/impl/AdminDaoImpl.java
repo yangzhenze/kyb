@@ -51,7 +51,7 @@ public class AdminDaoImpl extends BaseDao<Admin> implements IAdminDao {
 
 
 
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginateEntity(page,pageSize,sql,args);
     }
 
     @Override

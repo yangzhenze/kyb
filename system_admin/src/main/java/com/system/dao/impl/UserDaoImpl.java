@@ -4,6 +4,7 @@ import com.system.bean.User;
 import com.system.common.util.Page;
 import com.system.dao.BaseDao;
 import com.system.dao.IUserDao;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @author zzy
  * @Date 2018/11/19 9:04 PM
  */
+@Repository
 public class UserDaoImpl extends BaseDao<User> implements IUserDao{
     @Override
     public boolean save(User user) {
@@ -40,6 +42,6 @@ public class UserDaoImpl extends BaseDao<User> implements IUserDao{
     @Override
     public Page<User> findPage(int page, int pageSize, Object... args) {
         String sql = "order by create_date desc";
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginateEntity(page,pageSize,sql,args);
     }
 }

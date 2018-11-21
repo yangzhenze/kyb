@@ -40,6 +40,6 @@ public class CommissionDaoImpl extends BaseDao<Commission> implements ICommissio
     @Override
     public Page<Commission> findPage(int page, int pageSize, Object... args) {
         String sql = "order by create_date desc";
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginateEntity(page,pageSize,sql,args);
     }
 }

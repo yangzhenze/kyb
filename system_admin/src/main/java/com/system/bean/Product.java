@@ -82,8 +82,8 @@ public class Product implements Serializable{
      */
     @Getter
     @Setter
-    @Column(name="nedd_type")
-    private String neddType;
+    @Column(name="need_type")
+    private String needType;
 
     /**
      *图标

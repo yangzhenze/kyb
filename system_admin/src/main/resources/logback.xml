@@ -68,6 +68,12 @@
             <level>INFO</level>
         </filter>
     </appender>
+
+    <!--显示日志-->
+    <logger name="org.springframework.jdbc.core" additivity="false" level="DEBUG" >
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </logger>
     <!-- additivity 避免执行2次 -->
     <logger name="com.system"  level="INFO"  additivity="false">
         <appender-ref ref="STDOUT"/>

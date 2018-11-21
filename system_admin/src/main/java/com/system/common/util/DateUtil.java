@@ -6,6 +6,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 
 
 public class DateUtil {
@@ -256,6 +258,23 @@ public class DateUtil {
 		}
 		long intervalMilli = (fDate.getTime() - oDate.getTime())/1000;
 		return (int) (intervalMilli / (24 * 60 * 60));
+
+	}
+
+	public static void main(String [] args){
+		/*Calendar c = Calendar.getInstance();
+		c.setTime(new Date());
+		c.add(5,-1);
+		SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyyMMdd");
+		System.out.println(simpleDateFormat.format(c.getTime()));*/
+		TimerTask task = new TimerTask() {
+			@Override
+			public void run() {
+				System.out.println("定时器执行");
+			}
+		};
+		Timer timer = new Timer();
+		timer.schedule(task,new Date(),1000);
 
 	}
 }

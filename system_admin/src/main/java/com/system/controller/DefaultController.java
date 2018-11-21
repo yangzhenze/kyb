@@ -34,6 +34,12 @@ public class DefaultController {
         return this.upload(file,"admin",false);
 
     }
+    @RequestMapping(value="/product/upload",method = RequestMethod.POST,produces={"application/json;charset=UTF-8"})
+    @ApiOperation(value = "管理员头像上传",notes = "管理员头像上传接口")
+    public String uploadProductImg(@RequestParam("file") MultipartFile file) {
+        return this.upload(file,"product",true);
+
+    }
 
     @RequestMapping(value="/edit/upload",method = RequestMethod.POST,produces={"application/json;charset=UTF-8"})
     @ApiOperation(value = "文本编辑器图片上传",notes = "文本编辑器图片上传接口")

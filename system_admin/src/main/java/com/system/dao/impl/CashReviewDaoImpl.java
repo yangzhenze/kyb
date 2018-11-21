@@ -4,6 +4,7 @@ import com.system.bean.Review;
 import com.system.common.util.Page;
 import com.system.dao.BaseDao;
 import com.system.dao.ICashReviewDao;
+import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ import java.io.Serializable;
  * @author zzy
  * @Date 2018/11/19 9:02 PM
  */
+@Repository
 public class CashReviewDaoImpl extends BaseDao<Review> implements ICashReviewDao {
     @Override
     public boolean save(Review review) {
@@ -39,7 +41,14 @@ public class CashReviewDaoImpl extends BaseDao<Review> implements ICashReviewDao
 
     @Override
     public Page<Review> findPage(int page, int pageSize, Object... args) {
+        StringBuffer stringBuffer = new StringBuffer();
         String sql = "order by create_date desc";
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginateEntity(page,pageSize,sql,args);
+    }
+
+    @Override
+    public Page<Review> findPage(int page, int pageSize, String reviewStatus) {
+        String sql = "where review_status = ? order by create_date desc";
+        return super.paginateEntity(page,pageSize,sql,reviewStatus);
     }
 }

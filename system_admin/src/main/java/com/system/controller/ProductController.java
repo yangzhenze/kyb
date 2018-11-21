@@ -52,7 +52,7 @@ public class ProductController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE, produces = "application/json;charset=UTF-8")
     @ApiOperation(value = "删除产品", notes = "根据id删除产品")
     @ApiImplicitParam(name = "id",value = "管理员id",required = true,paramType = "path",dataType = "Integer")
-    public String delProduct(@PathVariable int [] id){
+    public String delProduct(@PathVariable Integer [] id){
         if(productService.delById(id)){
             return Ret.setSuccessMsg("删除成功");
         }

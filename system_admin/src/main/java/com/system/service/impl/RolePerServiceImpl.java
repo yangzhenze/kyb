@@ -1,4 +1,4 @@
-package com.system.service.ipml;
+package com.system.service.impl;
 
 import com.system.bean.RolePer;
 import com.system.dao.IRolePerDao;

@@ -1,5 +1,15 @@
 import request from '@/utils/request'
 
+// 文件上传
+export function upload(params) {
+  request.defaults.headers['Content-Type'] = 'multipart/form-data'
+  return request({
+    url: '/api/product/upload',
+    method: 'post',
+    data: params
+  })
+}
+
 // 获取列表
 export function getList(page, params) {
   return request({

@@ -1,4 +1,4 @@
-package com.system.service.ipml;
+package com.system.service.impl;
 
 import com.system.bean.Product;
 import com.system.common.util.Page;
@@ -21,7 +21,7 @@ public class ProductServiceImpl implements IProductService {
     }
 
     @Override
-    public boolean delById(int... ids) {
+    public boolean delById(Integer... ids) {
         return productDao.delById(ids);
     }
 

@@ -16,7 +16,13 @@
 
 package com.system.common.util;
 
+import com.system.bean.User;
+
 import java.security.MessageDigest;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class HashKit {
 
@@ -98,6 +104,49 @@ public class HashKit {
 		}
 		return diff == 0;
     }
+
+    public static void main(String[] args){
+		List<User> num = new ArrayList<>();
+		User u = new User();
+		u.setAgent(1);
+		u.setNickName("V");
+		num.add(u);
+		User u1 = new User();
+		u1.setAgent(2);
+		u1.setNickName("W");
+		num.add(u1);
+		User u2 = new User();
+		u2.setAgent(3);
+		u2.setNickName("X");
+		num.add(u2);
+		User u3 = new User();
+		u3.setAgent(4);
+		u3.setNickName("Y");
+		num.add(u3);
+		User u4 = new User();
+		u4.setAgent(5);
+		u4.setNickName("Z");
+		num.add(u4);
+
+		num.forEach( n ->{
+			System.out.println(n.getAgent());
+		});
+
+		System.out.println("after sort!");
+		Collections.sort(num, new Comparator<User>() {
+			@Override
+			public int compare(User o1, User o2) {
+				if(o1.getAgent()>o2.getAgent()){
+					return -1;
+				}
+				return 1;
+			}
+		});
+
+		num.forEach( n ->{
+			System.out.println(n.getAgent());
+		});
+	}
 }
 
 

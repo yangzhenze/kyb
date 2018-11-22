@@ -7,4 +7,6 @@ import com.system.bean.Commission;
  * @Date 2018/11/19 8:45 PM
  */
 public interface ICommissionDao extends IBaseDao<Commission> {
+
+    Commission getCommission();
 }

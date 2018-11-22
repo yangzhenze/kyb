@@ -1,6 +1,7 @@
 package com.system.dao;
 
-import org.springframework.boot.Banner;
+
+import com.system.bean.Banner;
 
 /**
  * @author zzy

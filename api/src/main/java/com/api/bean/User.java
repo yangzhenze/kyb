@@ -29,6 +29,7 @@ public class User implements Serializable{
      */
     @Getter
     @Setter
+    @Id
     @Column(name="user_code")
     private Integer userCode;
 

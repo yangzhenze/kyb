@@ -112,6 +112,7 @@ public class CreateModel {
 				fieldStr +="    @Setter\n";
 
 				if(resultSet.getString(4).equals("PRI")){
+					fieldStr +="    @Id\n";
 					if(resultSet.getString(2).equals("int") || resultSet.getString(2).equals("integer") || resultSet.getString(2).equals("bigint")){
 						fieldStr +="    @GeneratedValue(strategy = GenerationType.IDENTITY)\n";
 						fieldStr +="    @Column(name=\""+resultSet.getString(1)+"\")\n";

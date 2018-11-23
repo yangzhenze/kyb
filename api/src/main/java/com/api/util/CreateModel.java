@@ -138,6 +138,7 @@ public class CreateModel {
 		result += "* @author auto create\n";
 		result += "* @Date "+ new SimpleDateFormat("yyyy/mm/dd HH:mm:ss").format(new Date())+"\n";
 		result += "*/\n";
+		result += "@Entity\n";
 		result += "@Table(name=\""+tableName+"\")\n";
 		result += "public class "
 				+ toClassName(tableName)

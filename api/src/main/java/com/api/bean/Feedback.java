@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 /**
 * @author auto create
-* @Date 2018/17/23 14:17:35
+* @Date 2018/11/23 18:11:12
 */
+@Entity
 @Table(name="feedback")
 public class Feedback implements Serializable{
 

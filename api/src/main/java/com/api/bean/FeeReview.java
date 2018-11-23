@@ -6,8 +6,9 @@ import lombok.Getter;
 import lombok.Setter;
 /**
 * @author auto create
-* @Date 2018/17/23 14:17:35
+* @Date 2018/11/23 18:11:13
 */
+@Entity
 @Table(name="proxy_fee_review")
 public class FeeReview implements Serializable{
 
@@ -59,7 +60,7 @@ public class FeeReview implements Serializable{
     @Getter
     @Setter
     @Column(name="money")
-    private java.math.BigDecima money;
+    private java.math.BigDecimal money;
 
     /**
      *代理级别1一级2二级

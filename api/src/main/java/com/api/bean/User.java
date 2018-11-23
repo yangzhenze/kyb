@@ -7,8 +7,9 @@ import lombok.Setter;
 import org.hibernate.annotations.GenericGenerator;
 /**
 * @author auto create
-* @Date 2018/17/23 14:17:35
+* @Date 2018/11/23 18:11:13
 */
+@Entity
 @Table(name="user")
 public class User implements Serializable{
 
@@ -18,8 +19,8 @@ public class User implements Serializable{
      */
     @Getter
     @Setter
-    @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid")
+    /*@GeneratedValue(generator = "uuid")
+    @GenericGenerator(name = "uuid", strategy = "uuid")*/
     @Column(name="id")
     private String id;
 

@@ -26,6 +26,7 @@ public class CreateModel {
 	private static final String DATABASENAME;
 	private static final String PACKAGENAME;
 	private static final String FILE_PATH;
+	private static final String IN_TABLES; //要生成的table
 	static {
 		/*DATABASENAME = "数据库名";
 		URL = "jdbc:postgresql://localhost:5432/" + DATABASENAME;
@@ -34,13 +35,16 @@ public class CreateModel {
 		PASSWORD = "密码";
 		PACKAGENAME = "导入包路径";*/
 		FILE_PATH = "main/java/com/system/bean";
-		DATABASENAME = "kyb";
-		URL = "jdbc:mysql://123.207.61.212:3306/" + DATABASENAME;
+		DATABASENAME = "rgyx_gx";
+		URL = "jdbc:mysql://192.168.1.205:3316/" + DATABASENAME;
 		JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		USER_NAME = "root";
-		PASSWORD = "yangzhenze6712";
+		USER_NAME = "rgyx_gx";
+		PASSWORD = "rgyx_gx";
 
 		PACKAGENAME = FILE_PATH.substring(FILE_PATH.indexOf("java")+5,FILE_PATH.length()).replace("/",".");
+
+		IN_TABLES = "'t_business_duty_log'";//多个表用'',分隔
+
 	}
 
 	/**
@@ -156,6 +160,12 @@ public class CreateModel {
 	 */
 	public static List<String> getAllTables() {
 		String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '"+DATABASENAME+"'";
+
+		if(null != IN_TABLES && "" != IN_TABLES){
+			sql += " AND TABLE_NAME in ("+IN_TABLES+")";
+		}
+
+
 		try {
 			List<String> result = new ArrayList<String>();
 			Statement statement = conn.createStatement();

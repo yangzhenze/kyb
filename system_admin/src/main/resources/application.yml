@@ -32,7 +32,7 @@ spring:
 eureka:
   client:
     service-url:
-      defaultZone: http://123.207.61.212:9011/eureka/
+      defaultZone: http://localhost:9011/eureka/
 server:
   port: 9012
 management:

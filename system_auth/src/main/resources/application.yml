@@ -44,4 +44,4 @@ server:
   port: 9019
 logging:
   level:
-    com.system.feign.IAdminService: debug
+    com.system.feign.IAdminService: DEBUG

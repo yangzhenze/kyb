@@ -1,7 +1,9 @@
 /**
  *
  */
-package com.system.common.util;
+package com.system.common.util.generation;
+import com.system.common.util.DateUtil;
+
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
@@ -26,6 +28,10 @@ public class CreateModel {
 	private static final String DATABASENAME;
 	private static final String PACKAGENAME;
 	private static final String FILE_PATH;
+	//要生成的table
+	private static final String IN_TABLES;
+	private static final boolean IS_DAO;
+
 	static {
 		/*DATABASENAME = "数据库名";
 		URL = "jdbc:postgresql://localhost:5432/" + DATABASENAME;
@@ -33,14 +39,21 @@ public class CreateModel {
 		USER_NAME = "数据库帐号";
 		PASSWORD = "密码";
 		PACKAGENAME = "导入包路径";*/
-		FILE_PATH = "main/java/com/system/bean";
-		DATABASENAME = "admin_system";
-		URL = "jdbc:mysql://123.207.61.212:3306/" + DATABASENAME;
+		FILE_PATH = "system_admin/src/main/java/com/system/bean";
+		DATABASENAME = "rgyx_gx";
+		URL = "jdbc:mysql://192.168.1.205:3316/" + DATABASENAME;
 		JDBC_DRIVER = "com.mysql.jdbc.Driver";
-		USER_NAME = "root";
-		PASSWORD = "yangzhenze6712";
+		USER_NAME = "rgyx_gx";
+		PASSWORD = "rgyx_gx";
 
 		PACKAGENAME = FILE_PATH.substring(FILE_PATH.indexOf("java")+5,FILE_PATH.length()).replace("/",".");
+
+		//多个表用'',分隔
+		IN_TABLES = "'t_business_duty_log'";
+		//是否创建dao
+		IS_DAO = true;
+
+
 	}
 
 	/**
@@ -104,8 +117,6 @@ public class CreateModel {
 					fieldStr += "     *"+fieldMeta.getFieldComment()+"\n";
 					fieldStr += "     */\n";
 				}
-
-
 				fieldStr +="    @Getter\n";
 				fieldStr +="    @Setter\n";
 
@@ -116,7 +127,6 @@ public class CreateModel {
 				}
 
 				fieldStr +="    private "+fieldMeta.getFieldDataType()+" "+fieldMeta.getFieldName()+";\n\n";
-
 			}
 			resultSet.close();
 			statement.close();
@@ -124,23 +134,16 @@ public class CreateModel {
 			e.printStackTrace();
 			return null;
 		}
-
 		result += "/**\n";
 		result += "* @author auto create\n";
-		result += "* @Date "+DateUtil.formatDate(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n";
+		result += "* @Date "+ DateUtil.formatDate(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n";
 		result += "*/\n";
 		result += "@Table(name=\""+tableName+"\")\n";
 		result += "public class "
 				+ toClassName(tableName)
 				+ " implements Serializable{\n\n";
 		result += "    private static final long serialVersionUID = 1L;\n";
-
 		result +=fieldStr;
-
-
-
-
-
 		result +="}";
 
 
@@ -156,6 +159,12 @@ public class CreateModel {
 	 */
 	public static List<String> getAllTables() {
 		String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '"+DATABASENAME+"'";
+
+		if(null != IN_TABLES && "" != IN_TABLES){
+			sql += " AND TABLE_NAME in ("+IN_TABLES+")";
+		}
+
+
 		try {
 			List<String> result = new ArrayList<String>();
 			Statement statement = conn.createStatement();
@@ -180,20 +189,23 @@ public class CreateModel {
 		try {
 			getConnection();
 			List<String> tables = getAllTables();
+			List<String> beanNames = new ArrayList<>();
 			for (int i = 0; i < tables.size(); i++) {
 				File createFolder = new File(System.getProperty("user.dir")
-						+ "/src/" + FILE_PATH.replace(".", "/"));
+						+ "/" + FILE_PATH.replace(".", "/"));
 				// 路径不存在，生成文件夹
 				if (!createFolder.exists()) {
 					createFolder.mkdirs();
 				}
 				String entityString = CreateEntityString(tables.get(i).trim());
+				String beanName = toClassName(tables.get(i));
 				File entity = new File(createFolder.getAbsolutePath() + "/"
-						+ toClassName(tables.get(i))
+						+ beanName
 						+ ".java");
 				if (entity.exists()) {
 					entity.delete();
 				}
+				beanNames.add(beanName);
 				// 写入文件
 				BufferedWriter out = new BufferedWriter(new FileWriter(
 						entity, false));
@@ -204,37 +216,43 @@ public class CreateModel {
 			}
 			closeConnection();
 			System.out.println("生成成功");
+
+			if(IS_DAO){
+				CreateDao createDao = new CreateDao(FILE_PATH,beanNames.toString());
+				createDao.generation();
+			}
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 
 	private static String toClassName(String str){
-			StringBuffer sb = new StringBuffer();
+		StringBuffer sb = new StringBuffer();
 
-			if(str.indexOf("_") > -1){
-				str = str.substring(str.indexOf("_")+1,str.length());
-			}
+		if(str.indexOf("_") > -1){
+			str = str.substring(str.indexOf("_")+1,str.length());
+		}
 
-			if(str!=null){
+		if(str!=null){
 
-				for(int i=0;i<str.length();i++){
-					char c = str.charAt(i);
+			for(int i=0;i<str.length();i++){
+				char c = str.charAt(i);
 
-					if(i == 0){
-						sb.append(Character.toUpperCase(c));
-					}else if(c == '_'){
-						++i;
-						c = str.charAt(i);
-						sb.append(Character.toUpperCase(c));
-					}else{
+				if(i == 0){
+					sb.append(Character.toUpperCase(c));
+				}else if(c == '_'){
+					++i;
+					c = str.charAt(i);
+					sb.append(Character.toUpperCase(c));
+				}else{
 
-						sb.append(Character.toLowerCase(c));
-					}
+					sb.append(Character.toLowerCase(c));
 				}
 			}
+		}
 
-			return sb.toString();
+		return sb.toString();
 	}
 
 	private static String toFieldName(String str){

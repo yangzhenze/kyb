@@ -1,4 +1,4 @@
-package com.system.common.util;
+package com.system.common.util.generation;
 
 /**
  * 字段信息表

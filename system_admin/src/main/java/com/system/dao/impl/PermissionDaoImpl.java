@@ -42,7 +42,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
     }
 
     @Override
-    public Page<Permission> findPage(int page, int pageSize, Object... args) {
+    public Page<Permission> findPage(int page, int pageSize) {
         return null;
     }
 

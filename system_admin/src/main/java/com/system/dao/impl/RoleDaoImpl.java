@@ -42,9 +42,9 @@ public class RoleDaoImpl extends BaseDao<Role> implements IRoleDao {
     }
 
     @Override
-    public Page<Role> findPage(int page, int pageSize, Object... args) {
+    public Page<Role> findPage(int page, int pageSize) {
         String sql = "order by create_date desc";
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginate(page,pageSize,sql);
     }
 
     @Override

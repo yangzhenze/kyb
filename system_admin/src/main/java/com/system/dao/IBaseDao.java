@@ -48,8 +48,7 @@ public interface IBaseDao<T>{
      * 获取分页
      * @param page
      * @param pageSize
-     * @param args
      * @return
      */
-    Page<T> findPage(int page, int pageSize, Object... args);
+    Page<T> findPage(int page, int pageSize);
 }

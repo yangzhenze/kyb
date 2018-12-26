@@ -36,22 +36,9 @@ public class AdminDaoImpl extends BaseDao<Admin> implements IAdminDao {
     }
 
     @Override
-    public Page<Admin> findPage(int page, int pageSize, Object... args) {
+    public Page<Admin> findPage(int page, int pageSize) {
         String sql = "order by create_date desc";
-
-        /*for(int i = 0;i < args.length; i++){
-
-            if(i == 0){
-                sql += " "
-            }
-        }*/
-
-
-
-
-
-
-        return super.paginate(page,pageSize,sql,args);
+        return super.paginate(page,pageSize,sql);
     }
 
     @Override

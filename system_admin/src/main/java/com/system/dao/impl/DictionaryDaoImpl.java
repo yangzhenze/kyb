@@ -42,7 +42,7 @@ public class DictionaryDaoImpl extends BaseDao<Dictionary> implements IDictionar
     }
 
     @Override
-    public Page<Dictionary> findPage(int page, int pageSize, Object... args) {
+    public Page<Dictionary> findPage(int page, int pageSize) {
         return null;
     }
 

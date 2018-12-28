@@ -1,7 +1,7 @@
 package com.system.dao.impl;
 
 import com.system.bean.Dictionary;
-import com.system.common.util.Page;
+import com.zzy.generate.util.Page;
 import com.system.dao.BaseDao;
 import com.system.dao.IDictionaryDao;
 import org.springframework.stereotype.Repository;

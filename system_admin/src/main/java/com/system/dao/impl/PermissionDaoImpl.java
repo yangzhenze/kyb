@@ -1,9 +1,9 @@
 package com.system.dao.impl;
 
 import com.system.bean.Permission;
-import com.system.common.util.Page;
 import com.system.dao.BaseDao;
 import com.system.dao.IPermissionDao;
+import com.zzy.generate.util.Page;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;

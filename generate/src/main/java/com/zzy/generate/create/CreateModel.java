@@ -1,8 +1,10 @@
 /**
  *
  */
-package com.system.common.util.generation;
-import com.system.common.util.DateUtil;
+package com.zzy.generate.create;
+
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -20,25 +22,29 @@ import java.util.List;
  */
 public class CreateModel {
 
-	private static Connection conn = null;
-	private static final String URL;
-	private static final String JDBC_DRIVER;
-	private static final String USER_NAME;
-	private static final String PASSWORD;
-	private static final String DATABASENAME;
-	private static final String PACKAGENAME;
-	private static final String FILE_PATH;
-	//要生成的table
-	private static final String IN_TABLES;
-	private static final boolean IS_DAO;
+	protected static final org.slf4j.Logger logger = LoggerFactory.getLogger(CreateModel.class);
 
-	static {
-		/*DATABASENAME = "数据库名";
+	private  Connection conn = null;
+	private  final String URL;
+	private  final String DB_URL;
+	private  final String JDBC_DRIVER;
+	private  final String USER_NAME;
+	private  final String PASSWORD;
+	private  final String DATABASENAME;
+	private  final String PACKAGENAME;
+	private  final String FILE_PATH;
+	//要生成的table
+	private  final String IN_TABLES;
+	private  final boolean IS_DAO;
+	private  final boolean IS_SERVICE;
+
+	/*static {
+		*//*DATABASENAME = "数据库名";
 		URL = "jdbc:postgresql://localhost:5432/" + DATABASENAME;
 		JDBC_DRIVER = "org.postgresql.Driver";
 		USER_NAME = "数据库帐号";
 		PASSWORD = "密码";
-		PACKAGENAME = "导入包路径";*/
+		PACKAGENAME = "导入包路径";*//*
 		FILE_PATH = "system_admin/src/main/java/com/system/bean";
 		DATABASENAME = "rgyx_gx";
 		URL = "jdbc:mysql://192.168.1.205:3316/" + DATABASENAME;
@@ -52,20 +58,37 @@ public class CreateModel {
 		IN_TABLES = "'t_business_duty_log'";
 		//是否创建dao
 		IS_DAO = true;
+		IS_SERVICE = true;
 
 
+	}*/
+
+	public CreateModel(Config config){
+		this.URL = config.getUrl();
+		this.DATABASENAME = config.getDataBaseName();
+		this.DB_URL = "jdbc:mysql://"+this.URL+":"+config.getPort()+"/" + this.DATABASENAME;
+		this.JDBC_DRIVER = config.getDriver();
+		this.USER_NAME = config.getUser();
+		this.PASSWORD = config.getPassword();
+		this.FILE_PATH = config.getFilePath();
+		this.IS_DAO = config.isCreateDao();
+		this.IS_SERVICE = config.isCreateService();
+		this.PACKAGENAME = FILE_PATH.substring(FILE_PATH.indexOf("java")+5,FILE_PATH.length()).replace("/",".");
+		this.IN_TABLES=config.getInTables();
 	}
+
 
 	/**
 	 * 获得连接
 	 *
 	 * @return
 	 */
-	public static Connection getConnection() {
+	public  Connection getConnection() {
 		try {
 			Class.forName(JDBC_DRIVER);
-			conn = DriverManager.getConnection(URL, USER_NAME, PASSWORD);
+			conn = DriverManager.getConnection(DB_URL, USER_NAME, PASSWORD);
 		} catch (ClassNotFoundException e) {
+			logger.error("数据库连接失败！");
 			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -76,12 +99,13 @@ public class CreateModel {
 	/**
 	 * 关闭数据库
 	 */
-	public static void closeConnection() {
+	public  void closeConnection() {
 		try {
 			if (conn != null && !conn.isClosed()) {
 				conn.close();
 			}
 		} catch (Exception e) {
+			logger.error("关闭数据库连接失败！");
 			e.printStackTrace();
 		}
 	}
@@ -92,11 +116,11 @@ public class CreateModel {
 	 * @param tableName
 	 * @return
 	 */
-	private static String CreateEntityString(String tableName) {
+	private  String CreateEntityString(String tableName) {
 		String result = "package " + PACKAGENAME + ";\n\n";
 		result +="import java.io.Serializable;\n" +
-				"import com.system.common.anotation.Table;\n" +
-				"import com.system.common.anotation.Column;\n" +
+				"import com.zzy.generate.anotation.Table;\n" +
+				"import com.zzy.generate.anotation.Column;\n" +
 				"import lombok.Getter;\n" +
 				"import lombok.Setter;\n";
 
@@ -135,8 +159,8 @@ public class CreateModel {
 			return null;
 		}
 		result += "/**\n";
-		result += "* @author auto create\n";
-		result += "* @Date "+ DateUtil.formatDate(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n";
+		result += "* @author zzy\n";
+		result += "* @Date "+ DateFormatUtils.format(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n";
 		result += "*/\n";
 		result += "@Table(name=\""+tableName+"\")\n";
 		result += "public class "
@@ -157,7 +181,7 @@ public class CreateModel {
 	 *
 	 * @return
 	 */
-	public static List<String> getAllTables() {
+	public  List<String> getAllTables() {
 		String sql = "SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA = '"+DATABASENAME+"'";
 
 		if(null != IN_TABLES && "" != IN_TABLES){
@@ -177,6 +201,7 @@ public class CreateModel {
 			}
 			return result;
 		} catch (Exception e) {
+			logger.error("查询数据库表失败！");
 			e.printStackTrace();
 			return null;
 		}
@@ -185,7 +210,7 @@ public class CreateModel {
 	/**
 	 * 生成Entity
 	 */
-	public static void CreateEntity() {
+	public  void CreateEntity() {
 		try {
 			getConnection();
 			List<String> tables = getAllTables();
@@ -211,23 +236,28 @@ public class CreateModel {
 						entity, false));
 				out.write(entityString);
 				out.close();
-				out = null;
-				entity = null;
 			}
 			closeConnection();
-			System.out.println("生成成功");
+			logger.info("dao生成成功！");
+			logger.debug("dao生成成功！");
 
 			if(IS_DAO){
 				CreateDao createDao = new CreateDao(FILE_PATH,beanNames.toString());
 				createDao.generation();
 			}
 
+			if(IS_SERVICE){
+				CreateService createService = new CreateService(FILE_PATH,beanNames.toString());
+				createService.generation();
+			}
+
 		} catch (Exception e) {
+			logger.error("dao生成失败！");
 			e.printStackTrace();
 		}
 	}
 
-	private static String toClassName(String str){
+	private String toClassName(String str){
 		StringBuffer sb = new StringBuffer();
 
 		if(str.indexOf("_") > -1){
@@ -255,7 +285,7 @@ public class CreateModel {
 		return sb.toString();
 	}
 
-	private static String toFieldName(String str){
+	private String toFieldName(String str){
 		StringBuffer sb = new StringBuffer();
 
 		if(str!=null){
@@ -279,10 +309,6 @@ public class CreateModel {
 		}
 
 		return sb.toString();
-	}
-
-	public static void main(String[] args) {
-		CreateEntity();
 	}
 
 }

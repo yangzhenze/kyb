@@ -1,9 +1,9 @@
-package com.system.service.ipml;
+package com.system.service.impl;
 
 import com.system.bean.Role;
-import com.system.common.util.Page;
 import com.system.dao.IRoleDao;
 import com.system.service.IRoleService;
+import com.zzy.generate.util.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

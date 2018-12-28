@@ -1,7 +1,8 @@
 package com.system.service;
 
 import com.system.bean.Admin;
-import com.system.common.util.Page;
+import com.zzy.generate.util.Page;
+
 
 /**
  * @author zzy
@@ -34,7 +35,7 @@ public interface IAdminService {
      * @param ids
      * @return
      */
-    boolean delete(Integer[] ids);
+    boolean delete(Integer... ids);
 
     /**
      * 更新

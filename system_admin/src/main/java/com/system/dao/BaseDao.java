@@ -1,9 +1,9 @@
 package com.system.dao;
 
-import com.system.common.anotation.Column;
-import com.system.common.anotation.Table;
-import com.system.common.util.Page;
-import com.system.common.util.StrUtil;
+import com.zzy.StrUtil;
+import com.zzy.generate.anotation.Column;
+import com.zzy.generate.anotation.Table;
+import com.zzy.generate.util.Page;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
@@ -13,7 +13,6 @@ import org.springframework.jdbc.core.RowMapper;
 import java.io.Serializable;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
-import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -120,8 +119,14 @@ public class BaseDao<T> {
     public List<T> findEntity(String sql,Object ... args){
         return jdbcTemplate.query(sql, args, this.rowMapper);
     }
+
     public List<Map<String,Object>> select(String sql,Object ... args){
         return jdbcTemplate.queryForList(sql, args);
+    }
+
+    public Map<String,Object> selectFirst(String sql,Object ... args){
+        List<Map<String,Object>> list= this.select(sql,args);
+        return list.size() > 0?list.get(0):null;
     }
 
     /**
@@ -168,7 +173,12 @@ public class BaseDao<T> {
 
     }
 
-    // 组装SQL
+    /**
+     * 组装SQL
+     * @param sqlFlag
+     * @param entity
+     * @return
+     */
     private String makeSql(String sqlFlag,T entity) {
         StringBuffer sql = new StringBuffer();
         StringBuffer valSql = new StringBuffer();
@@ -201,7 +211,8 @@ public class BaseDao<T> {
             sql.append(" UPDATE " + this.tableName + " SET ");
             for (int i = 0; fields != null && i < fields.length; i++) {
                 try {
-                    fields[i].setAccessible(true); // 暴力反射
+                    // 暴力反射
+                    fields[i].setAccessible(true);
                     //属性是否为空
                     if(null != fields[i].get(entity) && fields[i].isAnnotationPresent(Column.class)){
                         String column = fields[i].getAnnotation(Column.class).name();
@@ -223,14 +234,20 @@ public class BaseDao<T> {
 
     }
 
-    // 设置参数
+    /**
+     * 设置参数
+     * @param entity
+     * @param sqlFlag
+     * @return
+     */
     private Object[] setArgs(T entity, String sqlFlag) {
         Field[] fields = entityClass.getDeclaredFields();
         List<Object> args = new ArrayList<>();
         if (sqlFlag.equals(SQL_INSERT)) {
             for (int i = 0; args != null && i < fields.length; i++) {
                 try {
-                    fields[i].setAccessible(true); // 暴力反射
+                    // 暴力反射
+                    fields[i].setAccessible(true);
 
                     if(null != fields[i].get(entity) && fields[i].isAnnotationPresent(Column.class)){
                         args.add(fields[i].get(entity));
@@ -247,7 +264,8 @@ public class BaseDao<T> {
             Object id = null;
             for (int i = 0; args != null && i < fields.length; i++) {
                 try {
-                    fields[i].setAccessible(true); // 暴力反射
+                    // 暴力反射
+                    fields[i].setAccessible(true);
                     if(null != fields[i].get(entity) && fields[i].isAnnotationPresent(Column.class)){
                         if(fields[i].getAnnotation(Column.class).isPK()){
                             id = fields[i].get(entity);
@@ -265,7 +283,8 @@ public class BaseDao<T> {
         } else if (sqlFlag.equals(SQL_DELETE)) {
             for (int i = 0; args != null && i < fields.length; i++) {
                 try {
-                    fields[i].setAccessible(true); // 暴力反射
+                    // 暴力反射
+                    fields[i].setAccessible(true);
                     if(null != fields[i].get(entity)){
                         if(fields[i].isAnnotationPresent(Column.class) && fields[i].getAnnotation(Column.class).isPK()){
                             args.add(fields[i].get(entity));

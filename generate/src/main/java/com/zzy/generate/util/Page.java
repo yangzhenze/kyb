@@ -1,7 +1,7 @@
 /**
  *
  */
-package com.system.common.util;
+package com.zzy.generate.util;
 
 import java.io.Serializable;
 import java.util.List;

@@ -1,7 +1,7 @@
 package com.system.bean;
 
-import com.system.common.anotation.Column;
-import com.system.common.anotation.Table;
+import com.zzy.generate.anotation.Column;
+import com.zzy.generate.anotation.Table;
 import lombok.Getter;
 import lombok.Setter;
 

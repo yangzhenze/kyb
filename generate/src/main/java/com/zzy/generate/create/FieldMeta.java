@@ -1,4 +1,4 @@
-package com.system.common.util.generation;
+package com.zzy.generate.create;
 
 /**
  * 字段信息表

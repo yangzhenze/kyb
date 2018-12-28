@@ -1,7 +1,8 @@
-package com.system.common.util.generation;
-
-import com.alibaba.druid.util.StringUtils;
-import com.system.common.util.DateUtil;
+package com.zzy.generate.create;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateFormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -14,20 +15,21 @@ import java.util.Date;
  * @Date 2018/12/22 4:39 PM
  */
 public class CreateDao {
+    protected static final Logger logger = LoggerFactory.getLogger(CreateDao.class);
 
     private String beanFilePath;
     private String systemPath = System.getProperty("user.dir");
     private String beanPackage;
     private String daoPackage;
-    private String inDao;
+    private String inBean;
 
     public CreateDao(){
 
     }
 
-    public CreateDao(String beanFilePath,String inDao){
+    public CreateDao(String beanFilePath,String inBean){
         this.beanFilePath = beanFilePath;
-        this.inDao = inDao;
+        this.inBean = inBean;
         beanPackage = this.beanFilePath.substring(this.beanFilePath.indexOf("java")+5,this.beanFilePath.length()).replace("/",".");
         daoPackage = beanPackage.substring(0,beanPackage.lastIndexOf("."))+".dao";
     }
@@ -45,8 +47,8 @@ public class CreateDao {
             for(File f:files){
                 if(f.isFile()){
                     String beanName = f.getName().replaceAll("[.][^.]+$", "");
-                    if(!StringUtils.isEmpty(inDao)){
-                        if(!inDao.contains(beanName)){
+                    if(!StringUtils.isEmpty(inBean)){
+                        if(!inBean.contains(beanName)){
                             continue;
                         }
                     }
@@ -57,8 +59,9 @@ public class CreateDao {
                     this.createFile(systemPath+"/"+beanFilePath.substring(0,beanFilePath.lastIndexOf("/"))+"/dao/impl",daoImlName,this.CreateDaoImpl(daoImlName,daoInterfaceName,beanName));
                 }
             }
-            System.out.println("dao生成生功!");
+            logger.info("dao生成生功!");
         }catch (IOException e){
+            logger.error("dao生成失败!");
             e.printStackTrace();
         }
     }
@@ -88,7 +91,8 @@ public class CreateDao {
         StringBuffer sb = new StringBuffer("package " + daoPackage + ";\n\n");
         sb.append("import "+beanPackage+"."+bean+";\n");
         sb.append("/**\n");
-        sb.append("* @Date "+ DateUtil.formatDate(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n");
+        sb.append("* @author zzy\n");
+        sb.append("* @Date "+ DateFormatUtils.format(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n");
         sb.append("*/\n");
         sb.append("public interface "+daoName+" extends IBaseDao<"+bean+"> {\n");
         sb.append("}");
@@ -97,15 +101,17 @@ public class CreateDao {
 
     private String CreateDaoImpl(String daoName,String daoInterface,String bean){
         StringBuffer sb = new StringBuffer("package " + daoPackage + ".impl;\n\n");
-        sb.append("import "+daoPackage.substring(0,daoPackage.lastIndexOf("."))+".common.util.Page;\n");
+        sb.append("import com.zzy.generate.util.Page;\n");
         sb.append("import "+daoPackage+".BaseDao;\n");
         sb.append("import "+beanPackage+"."+bean+";\n");
         sb.append("import java.io.Serializable;\n");
         sb.append("import "+daoPackage+"."+daoInterface+";\n");
         sb.append("import org.springframework.stereotype.Repository;\n");
         sb.append("/**\n");
-        sb.append("* @Date "+ DateUtil.formatDate(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n");
+        sb.append("* @author zzy\n");
+        sb.append("* @Date "+ DateFormatUtils.format(new Date(),"yyyy/mm/dd HH:mm:ss")+"\n");
         sb.append("*/\n");
+        sb.append("@Repository\n");
         sb.append("public class "+daoName+" extends BaseDao<"+bean+"> implements "+daoInterface+" {\n");
         sb.append("    @Override\n");
         sb.append("    public boolean save("+bean+" entity) {\n");
@@ -144,7 +150,7 @@ public class CreateDao {
         /*CreateDao dao = new CreateDao("/main/java/com/system");
         dao.generation();*/
         String ss = "/main/java/com/system";
-        System.out.println(ss.substring(0,ss.lastIndexOf("/")));
+        System.out.println(DateFormatUtils.format(new Date(),"yyyy-MM-dd hh:mm:ss"));
     }
 
 

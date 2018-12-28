@@ -1,6 +1,7 @@
 package com.system.dao;
 
-import com.system.common.util.Page;
+
+import com.zzy.generate.util.Page;
 
 import java.io.Serializable;
 

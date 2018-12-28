@@ -1,7 +1,7 @@
-package com.system.service.ipml;
+package com.system.service.impl;
 
 import com.system.bean.Admin;
-import com.system.common.util.Page;
+import com.zzy.generate.util.Page;
 import com.system.dao.IAdminDao;
 import com.system.service.IAdminService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ public class AdminerviceImpl implements IAdminService {
     }
 
     @Override
-    public boolean delete(Integer[] ids) {
+    public boolean delete(Integer ... ids) {
         return adminDao.delById(ids);
     }
 

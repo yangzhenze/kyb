@@ -1,11 +1,12 @@
-package com.system.service.ipml;
+package com.system.service.impl;
 
 import com.system.bean.Dictionary;
-import com.system.common.util.Page;
+import com.zzy.generate.util.Page;
 import com.system.dao.IDictionaryDao;
 import com.system.service.IDictionaryService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.transaction.interceptor.TransactionAspectSupport;
 
@@ -32,7 +33,7 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public boolean update(Dictionary dictionary) {
         if(dictionaryDao.update(dictionary)){
             List<Dictionary> dictionaryList = dictionaryDao.findByParentId(dictionary.getId());
@@ -55,37 +56,27 @@ public class DictionaryService implements IDictionaryService {
     }
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = Exception.class,propagation = Propagation.REQUIRED)
     public boolean delete(Integer [] ids) {
 
-        int count = 0;
         for (Integer id : ids) {
             List<Dictionary> dictionaryList = dictionaryDao.findByParentId(id);
-            Integer idArray [] = new Integer[dictionaryList.size()];
+            Integer [] idArray  = new Integer[dictionaryList.size()];
 
             for(int i = 0; i < idArray.length; i++){
                 idArray[i] = dictionaryList.get(i).getId();
             }
 
             if(idArray.length > 0){
-                if(dictionaryDao.delById(idArray)){
-                     if(dictionaryDao.delById(id)){
-                         count ++;
-                     }
-                }
-            } else {
-                if(dictionaryDao.delById(id)){
-                    count ++;
-                }
+                dictionaryDao.delById(idArray);
+            }
+
+            if(!dictionaryDao.delById(id)){
+                TransactionAspectSupport.currentTransactionStatus().setRollbackOnly();//关键
+                return false;
             }
         }
-
-        if(count == ids.length){
-            return true;
-        }
-
-
-        return false;
+        return true;
     }
 
     @Override

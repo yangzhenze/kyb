@@ -1,7 +1,7 @@
 package com.system.service;
 
 import com.system.bean.Role;
-import com.system.common.util.Page;
+import com.zzy.generate.util.Page;
 
 import java.util.List;
 

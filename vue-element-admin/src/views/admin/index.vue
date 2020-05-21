@@ -136,7 +136,7 @@ import { validateEmail } from '@/utils/validate'
 import { objectToFormData } from '@/utils'
 
 export default {
-  name: 'admin',
+  name: 'Admin',
   filters: {
     statusFilter(status) {
       const statusMap = {

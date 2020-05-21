@@ -10,7 +10,8 @@ public class CacheManager {
     @Bean
     public EhCacheManagerFactoryBean ehCacheManagerFactoryBean() {
         EhCacheManagerFactoryBean cacheManagerFactoryBean = new EhCacheManagerFactoryBean();
-        cacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));     // 缓存信息配置文件
+        // 缓存信息配置文件
+        cacheManagerFactoryBean.setConfigLocation(new ClassPathResource("ehcache.xml"));
         cacheManagerFactoryBean.setShared(true);
         return cacheManagerFactoryBean;
     }

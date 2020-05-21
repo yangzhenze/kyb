@@ -98,7 +98,7 @@ export default {
     role: {
       visitUrl: '请输入访问路径',
       permissionName: '请输入名称',
-      method: '请选择请求方式',
+      method: '请选择请求方式'
     }
   },
   dictionary: {

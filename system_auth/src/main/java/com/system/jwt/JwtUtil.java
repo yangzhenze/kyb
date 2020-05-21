@@ -23,7 +23,7 @@ public class JwtUtil {
      * @return
      */
     public static String createJWT(JwtInfo jwtInfo) {
-        //指定签名的时候使用的签名算法，也就是header那部分，jjwt已经将这部分内容封装好了。
+        //指定签名的时候使用的签名算法，也就是header那部分，jwt已经将这部分内容封装好了。
         SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
 
         long nowMillis = System.currentTimeMillis();
@@ -113,9 +113,9 @@ public class JwtUtil {
         jwtInfo.setId("1");
         jwtInfo.setUserName("yzz");
         jwtInfo.setPassword("123456");
-        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5enoiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlkIjoiMSIsImV4cCI6MTU0MjE2NDgzMywiaWF0IjoxNTQyMTYxMjMzLCJqdGkiOiI1MGQ2MjdhMy1kYTQzLTQ4MDgtOWE4YS00YWQ4ZjlkNmI0NWEiLCJ1c2VybmFtZSI6Inl6eiJ9.O5_59Z6B-0pkaooMeoYuBvD452dEU7Yh7gMvaARGfXw";
-        //System.out.println(token);
-        //System.out.println(JwtUtil.isVerify(token));
+        String token = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJ5enoiLCJwYXNzd29yZCI6IjEyMzQ1NiIsImlkIjoiMSIsImV4cCI6MTU4OTQ1NDA5NCwiaWF0IjoxNTg5NDUwNDk0LCJqdGkiOiI1ZGU1YzVkOS0yNmNkLTRiYmQtYWNkYy01OGZmNzdmNWExZDIiLCJ1c2VybmFtZSI6Inl6eiJ9.v5SZkqA6RM9wn0G0yNKn_A0kF48e_PFDTHPOVjUY7h8";
+        System.out.println(token);
+        System.out.println(JwtUtil.isVerify(token));
         System.out.println(JwtUtil.createJWT(jwtInfo));
     }
 

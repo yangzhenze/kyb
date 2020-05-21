@@ -98,7 +98,7 @@ export default {
     role: {
       visitUrl: 'Please Input Path',
       permissionName: 'Please Input Name',
-      method: 'Please Choice Method',
+      method: 'Please Choice Method'
     }
   },
   dictionary: {

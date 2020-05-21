@@ -97,7 +97,7 @@ export default {
       this.$refs.loginForm.validate(valid => {
         if (valid) {
           this.loading = true
-          const other = this
+          // const other = this
           const desPwd = encrypt.encryptByDE(this.loginForm.password, this.loginForm.username + 'admin')
           this.$store.dispatch('Login', objectToFormData({ username: this.loginForm.username, password: desPwd })).then(() => {
             this.$store.dispatch('GetInfo').then(() => {

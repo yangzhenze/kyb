@@ -67,7 +67,7 @@ import { getList, addPermission, updatePermission, getPermission, delPermission,
 import { objectToFormData } from '@/utils'
 import icons from './generateIconsView'
 export default {
-  name: 'permission',
+  name: 'Permission',
   components: { treeTable },
   data() {
     const validatePath = (rule, value, callback) => {

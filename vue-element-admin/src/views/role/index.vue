@@ -53,7 +53,7 @@ import { getList, addRole, updateRole, getRoleById, delRole, getRolePer, addRole
 import { objectToFormData } from '@/utils'
 import { getList as treeList } from '@/api/permission'
 export default {
-  name: 'role',
+  name: 'Role',
   components: { tableModel },
   data() {
     return {

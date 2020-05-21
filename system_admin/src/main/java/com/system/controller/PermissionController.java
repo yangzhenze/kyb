@@ -19,7 +19,7 @@ import java.util.Map;
  * @author zzy
  * @Date 2018/7/11 下午12:38
  */
-@Api(description = "权限操作接口")
+@Api(value = "权限操作接口")
 @RestController
 @RequestMapping("/per")
 public class PermissionController {

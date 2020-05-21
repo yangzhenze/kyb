@@ -1,9 +1,9 @@
 package com.system.dao.impl;
 
 import com.system.bean.Permission;
-import com.system.dao.BaseDao;
 import com.system.dao.IPermissionDao;
-import com.zzy.generate.util.Page;
+import com.zzy.db.helper.BaseDao;
+import com.zzy.db.helper.Page;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -15,10 +15,15 @@ import java.util.Map;
  * @Date 2018/7/10 下午4:33
  */
 @Repository
-public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissionDao {
+public class PermissionDaoImpl extends BaseDao<Permission,Integer> implements IPermissionDao {
     @Override
     public boolean save(Permission permission) {
         return super.insertEntity(permission);
+    }
+
+    @Override
+    public Permission saveAndGet(Permission permission) {
+        return null;
     }
 
     @Override
@@ -27,7 +32,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
     }
 
     @Override
-    public boolean delById(Serializable[] ids) {
+    public boolean delById(Integer[] ids) {
         return super.deleteById(ids);
     }
 
@@ -37,7 +42,12 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
     }
 
     @Override
-    public Permission findById(Serializable id) {
+    public Permission updateAndGet(Permission permission) {
+        return null;
+    }
+
+    @Override
+    public Permission findById(Integer id) {
         return super.findEntityById(id);
     }
 
@@ -56,7 +66,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
             sb.append(" where parent_id = "+parentId+"");
         }
 
-        Integer result = super.jdbcTemplate.queryForObject(sb.toString(),Integer.class);
+        Integer result = super.jdbcTemplate().queryForObject(sb.toString(),Integer.class);
 
         return result == null?0:++result;
     }
@@ -82,7 +92,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
         }
 
 
-        return super.jdbcTemplate.queryForObject(sb.toString(),Integer.class) > 0?false:true;
+        return super.jdbcTemplate().queryForObject(sb.toString(),Integer.class) > 0?false:true;
     }
 
     @Override
@@ -94,7 +104,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
             sql += " and parent_id = "+parentId+"";
         }
 
-        List<Permission> list = super.jdbcTemplate.query(sql,this.rowMapper,sort);
+        List<Permission> list = super.jdbcTemplate().query(sql,this.rowMapper,sort);
 
         return list.size() > 0?list.get(0):null;
     }
@@ -110,7 +120,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
             if (null != roleId) {
                 sql = "select p.* from sys_permission p left join sys_role_per r on p.id = r.per_id where p.parent_id is NULL and r.role_id="+roleId+" order by p.sort";
             }
-            results = super.jdbcTemplate.queryForList(sql);
+            results = super.jdbcTemplate().queryForList(sql);
         } else{
 
             sql = "select * from sys_permission p where p.parent_id = ? order by p.sort";
@@ -118,7 +128,7 @@ public class PermissionDaoImpl extends BaseDao<Permission> implements IPermissio
             if (null != roleId) {
                 sql = "select p.* from sys_permission p left join sys_role_per r on p.id = r.per_id where p.parent_id = ? and r.role_id="+roleId+" order by p.sort";
             }
-            results = super.jdbcTemplate.queryForList(sql,id);
+            results = super.jdbcTemplate().queryForList(sql,id);
         }
 
         if(results.size() > 0){

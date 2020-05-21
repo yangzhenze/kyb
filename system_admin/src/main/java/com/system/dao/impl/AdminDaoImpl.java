@@ -1,18 +1,23 @@
 package com.system.dao.impl;
 
 import com.system.bean.Admin;
-import com.zzy.generate.util.Page;
-import com.system.dao.BaseDao;
 import com.system.dao.IAdminDao;
+import com.zzy.db.helper.BaseDao;
+import com.zzy.db.helper.Page;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
 
 @Repository
-public class AdminDaoImpl extends BaseDao<Admin> implements IAdminDao {
+public class AdminDaoImpl extends BaseDao<Admin,Integer> implements IAdminDao {
     @Override
     public boolean save(Admin entity) {
         return super.insertEntity(entity);
+    }
+
+    @Override
+    public Admin saveAndGet(Admin admin) {
+        return null;
     }
 
     @Override
@@ -21,7 +26,7 @@ public class AdminDaoImpl extends BaseDao<Admin> implements IAdminDao {
     }
 
     @Override
-    public boolean delById(Serializable [] ids) {
+    public boolean delById(Integer [] ids) {
         return super.deleteById(ids);
     }
 
@@ -31,7 +36,12 @@ public class AdminDaoImpl extends BaseDao<Admin> implements IAdminDao {
     }
 
     @Override
-    public Admin findById(Serializable id) {
+    public Admin updateAndGet(Admin admin) {
+        return null;
+    }
+
+    @Override
+    public Admin findById(Integer id) {
         return super.findEntityById(id);
     }
 

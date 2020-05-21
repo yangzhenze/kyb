@@ -29,7 +29,7 @@ import java.util.UUID;
 /**
  * @author zzy
  */
-@Api(description = "管理员操作接口")
+@Api(value = "管理员操作接口")
 @RestController
 @RequestMapping("/admin")
 public class AdminController {
@@ -196,7 +196,7 @@ public class AdminController {
     }
 
     private String reNameFile(String fileName){
-        String suffix = fileName.substring(fileName.lastIndexOf("."),fileName.length());
+        String suffix = fileName.substring(fileName.lastIndexOf("."));
         return DateUtil.formatDate(new Date(),"yyyyMMddhhssmmSSS")+ UUID.randomUUID()+suffix;
     }
 

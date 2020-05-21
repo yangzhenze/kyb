@@ -3,8 +3,8 @@ package com.system.bean;
 
 
 
-import com.zzy.generate.anotation.Column;
-import com.zzy.generate.anotation.Table;
+import com.zzy.db.helper.anotation.Column;
+import com.zzy.db.helper.anotation.Table;
 import lombok.Getter;
 import lombok.Setter;
 

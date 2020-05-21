@@ -1,9 +1,9 @@
 package com.system.dao.impl;
 
 import com.system.bean.Role;
-import com.zzy.generate.util.Page;
-import com.system.dao.BaseDao;
 import com.system.dao.IRoleDao;
+import com.zzy.db.helper.BaseDao;
+import com.zzy.db.helper.Page;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -14,11 +14,16 @@ import java.util.List;
  * @Date 2018/7/16 上午10:54
  */
 @Repository
-public class RoleDaoImpl extends BaseDao<Role> implements IRoleDao {
+public class RoleDaoImpl extends BaseDao<Role,Integer> implements IRoleDao {
 
     @Override
     public boolean save(Role role) {
         return super.insertEntity(role);
+    }
+
+    @Override
+    public Role saveAndGet(Role role) {
+        return null;
     }
 
     @Override
@@ -27,7 +32,7 @@ public class RoleDaoImpl extends BaseDao<Role> implements IRoleDao {
     }
 
     @Override
-    public boolean delById(Serializable... ids) {
+    public boolean delById(Integer... ids) {
         return super.deleteById(ids);
     }
 
@@ -37,7 +42,12 @@ public class RoleDaoImpl extends BaseDao<Role> implements IRoleDao {
     }
 
     @Override
-    public Role findById(Serializable id) {
+    public Role updateAndGet(Role role) {
+        return null;
+    }
+
+    @Override
+    public Role findById(Integer id) {
         return super.findEntityById(id);
     }
 

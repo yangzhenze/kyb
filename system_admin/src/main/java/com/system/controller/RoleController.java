@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.*;
  * @author zzy
  * @Date 2018/7/16 上午11:34
  */
-@Api(description = "角色操作接口")
+@Api(value = "角色操作接口")
 @RestController
 @RequestMapping("/role")
 public class RoleController {

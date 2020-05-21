@@ -58,7 +58,7 @@ import treeTable from '@/components/TreeTable'
 import { getList, checkCode, checkValue, addDic, updateDic, getDicById, delDic } from '@/api/dictionary'
 import { objectToFormData } from '@/utils'
 export default {
-  name: 'dictionary',
+  name: 'Dictionary',
   components: { treeTable },
   data() {
     const validateCode = (rule, value, callback) => {

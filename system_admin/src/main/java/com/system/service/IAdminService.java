@@ -1,7 +1,7 @@
 package com.system.service;
 
 import com.system.bean.Admin;
-import com.zzy.generate.util.Page;
+import com.zzy.db.helper.Page;
 
 
 /**

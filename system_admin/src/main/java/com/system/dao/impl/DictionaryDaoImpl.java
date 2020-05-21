@@ -1,9 +1,9 @@
 package com.system.dao.impl;
 
 import com.system.bean.Dictionary;
-import com.zzy.generate.util.Page;
-import com.system.dao.BaseDao;
 import com.system.dao.IDictionaryDao;
+import com.zzy.db.helper.BaseDao;
+import com.zzy.db.helper.Page;
 import org.springframework.stereotype.Repository;
 
 import java.io.Serializable;
@@ -15,10 +15,15 @@ import java.util.Map;
  * @Date 2018/7/26 下午4:13
  */
 @Repository
-public class DictionaryDaoImpl extends BaseDao<Dictionary> implements IDictionaryDao {
+public class DictionaryDaoImpl extends BaseDao<Dictionary,Integer> implements IDictionaryDao {
     @Override
     public boolean save(Dictionary dictionary) {
         return super.insertEntity(dictionary);
+    }
+
+    @Override
+    public Dictionary saveAndGet(Dictionary dictionary) {
+        return null;
     }
 
     @Override
@@ -27,7 +32,7 @@ public class DictionaryDaoImpl extends BaseDao<Dictionary> implements IDictionar
     }
 
     @Override
-    public boolean delById(Serializable... ids) {
+    public boolean delById(Integer ... ids) {
         return super.deleteById(ids);
     }
 
@@ -37,7 +42,12 @@ public class DictionaryDaoImpl extends BaseDao<Dictionary> implements IDictionar
     }
 
     @Override
-    public Dictionary findById(Serializable id) {
+    public Dictionary updateAndGet(Dictionary dictionary) {
+        return null;
+    }
+
+    @Override
+    public Dictionary findById(Integer id) {
         return super.findEntityById(id);
     }
 
@@ -61,7 +71,7 @@ public class DictionaryDaoImpl extends BaseDao<Dictionary> implements IDictionar
 
     @Override
     public String findName(String code, String value) {
-        List<Map<String,Object>>  result = super.jdbcTemplate.queryForList("select dic_name from sys_dictionary where dic_code = ? and dic_value = ?",code,value);
+        List<Map<String,Object>>  result = super.select("select dic_name from sys_dictionary where dic_code = ? and dic_value = ?",code,value);
         return result.size() > 0 ? result.get(0).get("dic_name").toString() : "";
     }
 

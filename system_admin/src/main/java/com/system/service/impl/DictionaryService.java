@@ -1,9 +1,9 @@
 package com.system.service.impl;
 
 import com.system.bean.Dictionary;
-import com.zzy.generate.util.Page;
 import com.system.dao.IDictionaryDao;
 import com.system.service.IDictionaryService;
+import com.zzy.db.helper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;

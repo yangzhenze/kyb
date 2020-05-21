@@ -1,4 +1,4 @@
-package com.zzy.generate.create;
+package com.zzy.db.helper.generate;
 
 /**
  * @author zzy
@@ -10,7 +10,7 @@ public class Generate {
      * 生成bean/dao/service
      * @param config
      */
-    public void CreateBean(Config config){
+    public void CreateBean(DbConfig config){
         CreateModel createModel = new CreateModel(config);
         createModel.CreateEntity();
 
@@ -21,8 +21,8 @@ public class Generate {
      * @param beanUrl===bean所在的包
      * @param beanNames===bean名称，
      */
-    public void CreateDao(String beanUrl,String beanNames){
-        CreateDao createDao = new CreateDao(beanUrl,beanNames);
+    public void CreateDao(String beanUrl,String beanNames,String author){
+        CreateDao createDao = new CreateDao(beanUrl,beanNames,author);
         createDao.generation();
     }
 
@@ -31,8 +31,8 @@ public class Generate {
      * @param beanUrl===bean所在的包
      * @param beanNames===bean名称，
      */
-    public void CreateService(String beanUrl,String beanNames){
-        CreateService createService = new CreateService(beanUrl,beanNames);
+    public void CreateService(String beanUrl,String beanNames,String author){
+        CreateService createService = new CreateService(beanUrl,beanNames,author);
         createService.generation();
     }
 }

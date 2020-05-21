@@ -1,14 +1,12 @@
-package com.system.dao;
+package com.zzy.db.helper;
 
-
-import com.zzy.generate.util.Page;
 
 import java.io.Serializable;
 
 /**
  * @author zzy
  */
-public interface IBaseDao<T>{
+public interface IBaseDao<T,ID extends Serializable>{
     /**
      * 保存
      * @param t
@@ -16,6 +14,33 @@ public interface IBaseDao<T>{
      */
     boolean save(T t);
 
+    /**
+     * 保存并返回
+     * @param t
+     * @return
+     */
+    T saveAndGet(T t);
+
+    /**
+     * 更新
+     * @param t
+     * @return
+     */
+    boolean update(T t);
+
+    /**
+     * 更新并返回
+     * @param t
+     * @return
+     */
+    T updateAndGet(T t);
+
+    /**
+     * 根据id查询
+     * @param id
+     * @return
+     */
+    T findById(ID id);
 
     /**
      * 删除
@@ -29,21 +54,9 @@ public interface IBaseDao<T>{
      * @param ids
      * @return
      */
-    boolean delById(Serializable... ids);
+    boolean delById(ID... ids);
 
-    /**
-     * 更新
-     * @param t
-     * @return
-     */
-    boolean update(T t);
 
-    /**
-     * 根据id查询
-     * @param id
-     * @return
-     */
-    T findById(Serializable id);
 
     /**
      * 获取分页

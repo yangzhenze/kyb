@@ -20,7 +20,7 @@ import java.util.Map;
  * @author zzy
  * @Date 2018/7/27 上午10:44
  */
-@Api(description = "字典操作接口")
+@Api(value = "字典操作接口")
 @RestController
 @RequestMapping("/dic")
 public class DictionaryController {

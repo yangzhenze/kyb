@@ -1,7 +1,8 @@
 package com.system.dao;
 
 import com.system.bean.Dictionary;
-import com.zzy.generate.util.Page;
+import com.zzy.db.helper.IBaseDao;
+import com.zzy.db.helper.Page;
 
 import java.util.List;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
  * @author zzy
  * @Date 2018/7/26 下午4:12
  */
-public interface IDictionaryDao extends IBaseDao<Dictionary>{
+public interface IDictionaryDao extends IBaseDao<Dictionary,Integer> {
 
     List<Dictionary> findByParentId(Integer id);
 

@@ -8,6 +8,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+/**
+ * @author zzy
+ * 服务调用
+ * value:调用服务名称 fallback:断路由后的回调 configuration:日志配置
+ */
 @FeignClient(value = "system-admin",fallback = AdminServiceFallBack.class,configuration = FeignLogConfiguration.class)
 public interface IAdminService {
 

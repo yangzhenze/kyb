@@ -1,7 +1,7 @@
 package com.system.service;
 
 import com.system.bean.Dictionary;
-import com.zzy.generate.util.Page;
+import com.zzy.db.helper.Page;
 
 import java.util.List;
 import java.util.Map;

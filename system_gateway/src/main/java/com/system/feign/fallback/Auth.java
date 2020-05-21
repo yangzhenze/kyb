@@ -3,6 +3,9 @@ package com.system.feign.fallback;
 import com.system.feign.IAuth;
 import org.springframework.stereotype.Service;
 
+/**
+ * @author zzy
+ */
 @Service
 public class Auth implements IAuth {
     @Override

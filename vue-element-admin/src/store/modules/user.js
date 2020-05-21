@@ -1,4 +1,4 @@
-import { login, logout, getInfo, getPer } from '@/api/login'
+import { login, getInfo, getPer } from '@/api/login'
 import { getToken, setToken, removeToken } from '@/utils/auth'
 import { toRouters } from '@/utils'
 
@@ -8,7 +8,7 @@ const user = {
     userInfo: {},
     permission: null
   },
-
+  // 在vue 中，只有mutation 才能改变state.  mutation 类似事件，每一个mutation都有一个类型和一个处理函数，因为只有mutation 才能改变state, 所以处理函数自动会获得一个默认参数 state
   mutations: {
     SET_TOKEN: (state, token) => {
       state.token = token
@@ -73,13 +73,13 @@ const user = {
     // 登出
     LogOut({ commit, state }) {
       return new Promise((resolve, reject) => {
-        /*logout().then(() => {
+        /* logout().then(() => {
           commit('SET_TOKEN', '')
           removeToken()
           resolve()
         }).catch(error => {
           reject(error)
-        })*/
+        }) */
         commit('SET_TOKEN', '')
         commit('SET_PERMISSION', null)
         removeToken()

@@ -1,14 +1,14 @@
 package com.system.service.impl;
 
 import com.system.bean.Admin;
-import com.zzy.generate.util.Page;
 import com.system.dao.IAdminDao;
 import com.system.service.IAdminService;
+import com.zzy.db.helper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
-public class AdminerviceImpl implements IAdminService {
+public class AdminServiceImpl implements IAdminService {
     @Autowired
     IAdminDao adminDao;
 

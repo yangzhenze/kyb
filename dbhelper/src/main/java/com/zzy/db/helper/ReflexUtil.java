@@ -30,6 +30,8 @@ public class ReflexUtil {
      */
     public static final String SQL_SELECT = "SELECT";
     public static final String SQL_START = " *";
+    public static final String SQL_COUNT = " COUNT(*)";
+    public static final String SQL_SUM = " SUM(%s)";
     public static final String SQL_INSERT = "INSERT";
     public static final String SQL_UPDATE = "UPDATE";
     public static final String SQL_DELETE = "DELETE";
@@ -450,6 +452,8 @@ public class ReflexUtil {
 
         if (clazz.isAnnotationPresent(Table.class)) {
             tableName = clazz.getAnnotation(Table.class).name();
+        }else{
+            Assert.state(false, String.format("非标准实体,缺少%s注解", Table.class.getName()));
         }
         //表名
         return tableName;

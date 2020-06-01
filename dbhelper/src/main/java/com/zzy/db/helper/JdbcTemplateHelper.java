@@ -153,6 +153,58 @@ public abstract class JdbcTemplateHelper extends JdbcHolder {
 
     }
 
+    /**
+     * 根据实体获取count数
+     * @param clazz
+     * @param whereSql
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public static <T> Integer getCount(Class<T> clazz,String whereSql,Object... args){
+        String tableName = ReflexUtil.getTableName(clazz);
+        StringBuffer sql = new StringBuffer(ReflexUtil.SQL_SELECT);
+        sql.append(ReflexUtil.SQL_COUNT);
+        sql.append(ReflexUtil.SQL_FROM);
+        sql.append(tableName);
+
+        if(!whereSql.isEmpty()){
+            if(!whereSql.toUpperCase().contains(ReflexUtil.SQL_WHERE)){
+                sql.append(ReflexUtil.SQL_WHERE);
+            }
+            sql.append(whereSql);
+        }
+
+        ReflexUtil.forDebuggingAndPrintingSQLLogs(sql.toString(), args);
+        return getJdbcTemplate().queryForObject(sql.toString(), args, Integer.class);
+    }
+
+    /**
+     * 根据实体获取sum数
+     * @param clazz
+     * @param whereSql
+     * @param args
+     * @param <T>
+     * @return
+     */
+    public static <T> Integer getSum(Class<T> clazz,String filed,String whereSql,Object... args){
+        String tableName = ReflexUtil.getTableName(clazz);
+        StringBuffer sql = new StringBuffer(ReflexUtil.SQL_SELECT);
+        sql.append(ReflexUtil.SQL_SUM);
+        sql.append(ReflexUtil.SQL_FROM);
+        sql.append(tableName);
+
+        if(!whereSql.isEmpty()){
+            if(!whereSql.toUpperCase().contains(ReflexUtil.SQL_WHERE)){
+                sql.append(ReflexUtil.SQL_WHERE);
+            }
+            sql.append(whereSql);
+        }
+
+        ReflexUtil.forDebuggingAndPrintingSQLLogs(String.format(sql.toString(), filed), args);
+        return getJdbcTemplate().queryForObject(String.format(sql.toString(), filed), args, Integer.class);
+    }
+
 
     private static <T> boolean batchForEntity(List<T> entityList,String sqlFlag) throws SQLException {
         Connection connection = null;
@@ -471,7 +523,7 @@ public abstract class JdbcTemplateHelper extends JdbcHolder {
         if(log.isDebugEnabled()){
             log.debug("============================================================PAGINATE-START============================================================");
         }
-        String totalRowSql = ReflexUtil.SQL_SELECT + " count(*) " + ReflexUtil.replaceOrderBy(sql);
+        String totalRowSql = ReflexUtil.SQL_SELECT + ReflexUtil.SQL_COUNT + ReflexUtil.replaceOrderBy(sql);
         int totalRow = selectForTotalRow(totalRowSql, args);
         int totalPage = getTotalPage(totalRow, pageSize);
         sql += new StringBuffer(ReflexUtil.SQL_LIMIT).append((whichPage - 1) * pageSize).append(",").append(pageSize).toString();
@@ -514,7 +566,7 @@ public abstract class JdbcTemplateHelper extends JdbcHolder {
         if (!StringUtils.isBlank(whereSql) && !whereSql.trim().toUpperCase().startsWith(ReflexUtil.SQL_WHERE.trim()) && !whereSql.trim().toUpperCase().startsWith(ReflexUtil.SQL_ORDER.trim())&& !whereSql.trim().toUpperCase().startsWith(ReflexUtil.SQL_GROUP.trim())) {
             whereSql = ReflexUtil.SQL_WHERE + whereSql;
         }
-        String totalRowSql = ReflexUtil.SQL_SELECT + " count(*)" + ReflexUtil.SQL_FROM + ReflexUtil.getTableName(clazz) + ReflexUtil.replaceOrderBy(whereSql);
+        String totalRowSql = ReflexUtil.SQL_SELECT + ReflexUtil.SQL_COUNT + ReflexUtil.SQL_FROM + ReflexUtil.getTableName(clazz) + ReflexUtil.replaceOrderBy(whereSql);
         int totalRow = selectForTotalRow(totalRowSql, args);
         int totalPage = getTotalPage(totalRow, pageSize);
         whereSql += new StringBuffer(ReflexUtil.SQL_LIMIT).append((whichPage - 1) * pageSize).append(",").append(pageSize).toString();
